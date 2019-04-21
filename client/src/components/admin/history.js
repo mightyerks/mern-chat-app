@@ -203,7 +203,7 @@ class History extends React.Component{
     id:''
   };
   componentDidMount(){
-    axios.get("http://localhost:5000/api/history")
+    axios.get("http://localhost:4000/api/history")
     .then(hist => {
       this.setState({data: hist.data})
     })
@@ -260,7 +260,7 @@ class History extends React.Component{
     const arrayCopy = this.state.data.filter((row) => {
       return row._id !== eid
     });
-    axios.get('http://localhost:5000/api/history/delete/'+eid)
+    axios.get('http://localhost:4000/api/history/delete/'+eid)
     this.setState({data:arrayCopy,  selected: []})
 
   };

@@ -217,7 +217,7 @@ class Room extends React.Component{
     status:'Active'
   };
   componentDidMount(){
-    axios.get("http://localhost:5000/api/room")
+    axios.get("http://localhost:4000/api/room")
     .then(hist => {
       this.setState({data: hist.data})
     })
@@ -273,7 +273,7 @@ class Room extends React.Component{
     // Array.prototype.filter returns new array
     // so we aren't mutating state here
     if(eid!=='5cb60f39425e3b7e58103e86'){
-      axios.post('http://localhost:5000/api/room/update/'+eid, {
+      axios.post('http://localhost:4000/api/room/update/'+eid, {
         status:stat
       })
       this.setState({selected: []})
@@ -290,7 +290,7 @@ class Room extends React.Component{
       return row._id !== eid
     });
     if(eid!=='5cb60f39425e3b7e58103e86'){
-      axios.get('http://localhost:5000/api/room/delete/'+eid)
+      axios.get('http://localhost:4000/api/room/delete/'+eid)
       this.setState({data:arrayCopy,  selected: []})
     }else{
       alert('Cannot Delete Main Chat Room')
