@@ -16,7 +16,7 @@ class Adminlogin  extends Component {
         };
     }
     componentWillMount(){
-       // axios.get('http://localhost:4000/api/admin')  
+       // axios.get('http://localhost:5000/api/admin')  
          //   .then(response => this.setState({dbuser: response.data[0].username, dbpass:response.data[0].password}))
     }
     validateForm(){

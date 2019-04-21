@@ -24,7 +24,7 @@ class App extends Component {
       admin:false
       
     }
-    this.socket =  io('localhost:4000');
+    this.socket =  io('localhost:5000');
   }
   ///////////Choosing a username///////////
   submitUsername = e =>{

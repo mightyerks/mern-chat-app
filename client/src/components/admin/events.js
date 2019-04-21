@@ -206,7 +206,7 @@ class Events extends React.Component{
     id:''
   };
   componentDidMount(){
-    axios.get("http://localhost:4000/api/eventlog")
+    axios.get("http://localhost:5000/api/eventlog")
     .then(hist => {
       this.setState({data: hist.data})
     })
@@ -264,7 +264,7 @@ class Events extends React.Component{
     const arrayCopy = this.state.data.filter((row) => {
       return row._id !== eid
     });
-    axios.get('http://localhost:4000/api/eventLog/delete/'+eid)
+    axios.get('http://localhost:5000/api/eventLog/delete/'+eid)
     this.setState({data:arrayCopy, selected: []})
 
   };
