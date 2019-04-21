@@ -77,34 +77,6 @@ module.exports = (io)=>{
 
         //save messages to the database
         socket.on('SEND_MESSAGE',  (data)=> {
-            
-            /*var msg = data.trim();
-            if(msg.substr(0,3) === '/w '){
-                msg = msg.substr(3);
-                var ind = msg.indexOf(' ');
-                if(ind !== -1) {
-                    var name = msg.substring(0, ind);
-                    var msg  = msg.substring(ind+1);
-                    if(name in users){
-                        users[name].emit('whisper', {msg: msg ,nick: socket.nickname});
-                    //store private message in database
-                        var newPrivateMessage = new Private({sender:socket.nickname, reciever:name, msg:msg})
-                        newPrivateMessage.save((err)=>{
-                            console.log('\n==========STORE PRIVATE MESSAGE IN DATABASE==========\nSent by: '+newPrivateMessage.sender+'\nRecieved by: ' + newPrivateMessage.reciever + '\nWith Message: '+newPrivateMessage.msg+'\nSaved to database at: '+ newPrivateMessage.time)
-                    //store private message event in database
-                        var newMessageEvent=new Elog({type:'PRIVATE MESSAGE', name:socket.nickname, socket:socket.id})
-                        newMessageEvent.save((err)=>{
-                            if (err) throw err;
-                            console.log('\n==========STORE EVENT IN DATABASE==========\nEvent Type: '+newMessageEvent.type+'\nCreated by: ' + newMessageEvent.name + '\nSent to: '+newPrivateMessage.reciever+'\nSaved to database at: '+ newMessageEvent.connect)
-                    })
-                        })
-                    }else {
-                        callback('Error! Enter a valid user');
-                    }
-                }else {
-                    callback('Error! Please enter a message for your whisper');
-                }
-            }else{}*/
         //store new message event
             var newMessageEvent=new Elog({type:'MESSAGE SENT', name:socket.nickname, socket:socket.id, room:data['room']})
             newMessageEvent.save((err)=>{
@@ -119,6 +91,7 @@ module.exports = (io)=>{
                 io.sockets.in(socket.room).emit('NEW_MESSAGE', {author:socket.nickname, message:data['message']})
             })
         })
+        
         //handle the switching of rooms
         socket.on('SWITCH_ROOM', (newroom)=>{
             socket.leave(socket.room);

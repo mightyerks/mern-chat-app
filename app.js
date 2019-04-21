@@ -15,7 +15,7 @@ server.listen(port, function(){
 });
 
 //////////DATABASE CONNECTION//////////
-mongoose.connect('mongodb://admin:password123@ds349455.mlab.com:49455/testt',{ useNewUrlParser: true }, (err)=> {
+mongoose.connect('mongodb://admin:admin123@ds129050.mlab.com:29050/react-chat',{ useNewUrlParser: true }, (err)=> {
     if (err){
         console.log(err);
     }else {
