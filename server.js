@@ -6,7 +6,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
     port = process.env.PORT || 5000;
-    require('./socketManager/socket')(io);
+    require('./socketManager')(io)
 
 
 //////////PORT CONNECTION//////////

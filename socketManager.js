@@ -3,8 +3,7 @@ var rooms = [],
     User = require('../models/Users.js'),
     Chat = require('../models/Chats.js'),
     Sockio = require('../models/Sockets.js'),
-    Elog = require('../models/Events.js'),
-    Private = require('../models/PrivateChats.js'),
+    Event = require('../models/Events.js'),
     Rooms = require('../models/Rooms')
 
 module.exports = (io)=>{
@@ -22,7 +21,7 @@ module.exports = (io)=>{
             })
         });
     //store event
-        var connectEvent=new Elog({type:'CONNECTION', socket:socket.id, room:'Lobby'})
+        var connectEvent=new Event({type:'CONNECTION', socket:socket.id, room:'Lobby'})
         connectEvent.save((err)=>{
                 if (err) throw err;
                      console.log('\n==========STORE EVENT IN DATABASE==========\nSocket: '+connectEvent.socket+'\nWith type: '+connectEvent.type+"\nHas been connected @: "+ connectEvent.connect +'\nIn the: '+connectEvent.room+'\nSaved to database at: '+ connectEvent.connect)
@@ -51,7 +50,7 @@ module.exports = (io)=>{
                     console.log('\n==========STORE SOCKET IN DATABASE==========\nSocket: '+newSock.socket_id+"\nCreated by: "+ newSock.createdBy+"\nSaved to database at: "+ newSock.connectTime)
                 })
             //store event
-                var newUserEvent=new Elog({type:'NEW USER',name:newUser.username, socket:socket.id, room:'Main Room'})
+                var newUserEvent=new Event({type:'NEW USER',name:newUser.username, socket:socket.id, room:'Main Room'})
                 newUserEvent.save((err)=>{
                     if (err) throw err;
                     console.log('\n==========STORE EVENT IN DATABASE==========\nEvent Type: '+newUserEvent.type+'\nCreated by: ' + newUserEvent.name + '\nFor Socket: '+newUserEvent.socket+'\nIn the: '+newUserEvent.room+'\nSaved to database at: '+ newUserEvent.connect)
@@ -78,7 +77,7 @@ module.exports = (io)=>{
         //save messages to the database
         socket.on('SEND_MESSAGE',  (data)=> {
         //store new message event
-            var newMessageEvent=new Elog({type:'MESSAGE SENT', name:socket.nickname, socket:socket.id, room:data['room']})
+            var newMessageEvent=new Event({type:'MESSAGE SENT', name:socket.nickname, socket:socket.id, room:data['room']})
             newMessageEvent.save((err)=>{
                 if (err) throw err;
                 console.log('\n==========STORE EVENT IN DATABASE==========\nEvent Type: '+newMessageEvent.type+'\nCreated by: ' + newMessageEvent.name + '\nFor Socket: '+newMessageEvent.socket+'\nIn the: '+newMessageEvent.room+'\nSaved to database at: '+ newMessageEvent.connect)
@@ -91,19 +90,19 @@ module.exports = (io)=>{
                 io.sockets.in(socket.room).emit('NEW_MESSAGE', {author:socket.nickname, message:data['message']})
             })
         })
-        
+
         //handle the switching of rooms
         socket.on('SWITCH_ROOM', (newroom)=>{
             socket.leave(socket.room);
         //store leave room event
-            var leaveRoomEvent=new Elog({type:'LEAVE ROOM', name:socket.nickname, socket:socket.id, room:socket.room})
+            var leaveRoomEvent=new Event({type:'LEAVE ROOM', name:socket.nickname, socket:socket.id, room:socket.room})
             leaveRoomEvent.save((err)=>{
                 if (err) throw err;
                 console.log('\n==========STORE EVENT IN DATABASE==========\nEvent Type: '+leaveRoomEvent.type+'\nCreated by: ' + leaveRoomEvent.name + '\nFor Socket: '+leaveRoomEvent.socket+'\nIn the: '+leaveRoomEvent.room+'\nSaved to database at: '+ leaveRoomEvent.connect)
             })
             socket.join(newroom);
         //store join room event
-            var joinRoomEvent=new Elog({type:'JOIN ROOM', name:socket.nickname, socket:socket.id, room:newroom})
+            var joinRoomEvent=new Event({type:'JOIN ROOM', name:socket.nickname, socket:socket.id, room:newroom})
             joinRoomEvent.save((err)=>{
                 if (err) throw err;
                 console.log('\n==========STORE EVENT IN DATABASE==========\nEvent Type: '+joinRoomEvent.type+'\nCreated by: ' + joinRoomEvent.name + '\nFor Socket: '+joinRoomEvent.socket+'\nIn the: '+joinRoomEvent.room+'\nSaved to database at: '+ joinRoomEvent.connect)
@@ -138,7 +137,7 @@ module.exports = (io)=>{
                 })
             })
         //store disconnect event
-            var disconnectEvent=new Elog({type:'DISCONNECT', disconnect: new Date(), name:socket.nickname, socket:socket.id})
+            var disconnectEvent=new Event({type:'DISCONNECT', disconnect: new Date(), name:socket.nickname, socket:socket.id})
             disconnectEvent.save((err)=>{
                 if (err) throw err;
                 console.log('\n==========STORE EVENT IN DATABASE==========\nEvent Type: '+disconnectEvent.type+'\nCreated by: ' + disconnectEvent.name + '\nFor Socket: '+disconnectEvent.socket+'\nSaved to database at: '+ disconnectEvent.disconnect)
